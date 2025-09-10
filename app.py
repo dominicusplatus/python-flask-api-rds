@@ -6,6 +6,8 @@ from sqlalchemy import create_engine, text
 import pymysql
 import psycopg2
 
+from datetime import datetime
+
 app = Flask(__name__)
 
 # Database configuration from environment variables
@@ -85,7 +87,7 @@ def health_check():
     return jsonify({
         'status': 'healthy',
         'message': 'Application is running',
-        'timestamp': sqlalchemy.func.now()
+        'timestamp': datetime.now().isoformat()
     }), 200
 
 
