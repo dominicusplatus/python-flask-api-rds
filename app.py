@@ -23,10 +23,16 @@ APP_PORT = int(os.getenv('SERVER_PORT', '8080'))
 
 def get_database_url():
     """Construct database URL based on engine type"""
+    # Check if host already includes port
+    if ':' in DB_HOST:
+        host_part = DB_HOST
+    else:
+        host_part = f"{DB_HOST}:{DB_PORT}"
+
     if DB_ENGINE == 'mysql':
-        return f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        return f"mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{host_part}/{DB_NAME}"
     elif DB_ENGINE == 'postgres':
-        return f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        return f"postgresql://{DB_USER}:{DB_PASSWORD}@{host_part}/{DB_NAME}"
     else:
         raise ValueError(f"Unsupported database engine: {DB_ENGINE}")
 
